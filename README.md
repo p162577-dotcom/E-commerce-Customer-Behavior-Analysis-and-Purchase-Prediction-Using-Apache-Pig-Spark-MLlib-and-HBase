@@ -7,10 +7,10 @@ This project analyzes customer behavior in an e-commerce platform using the Taob
 Instead of using only a simple Python-based analysis, this project applies a complete big data workflow:
 
 ```text
-HDFS → Apache Pig → Apache Spark MLlib → HBase → Jupyter Notebook
+HDFS → Apache Pig → Apache Spark MLlib → HBase → Zeppelin Notebook
 ```
 
-Apache Pig is used for data cleaning and behavior summarization. Apache Spark is used for feature engineering and machine learning. HBase is used to store the processed user-level behavior features. Jupyter Notebook is used to generate visualizations for analysis and reporting.
+Apache Pig is used for data cleaning and behavior summarization. Apache Spark is used for feature engineering and machine learning. HBase is used to store the processed user-level behavior features. Zeppelin Notebook is used to generate the main visualizations for behavior analysis and report presentation.
 
 This project was developed for the STQD6324 Data Management final report.
 
@@ -65,15 +65,15 @@ For this project, a 200,000-record subset was used to ensure that the workflow c
 
 ## Tools and Technologies
 
-| Tool             | Purpose                                                          |
-| ---------------- | ---------------------------------------------------------------- |
-| HDFS             | Stores raw and processed datasets                                |
-| Apache Pig       | Cleans raw behavior data and generates behavior summary          |
-| Apache Spark     | Creates user-level features                                      |
-| Spark MLlib      | Trains purchase prediction models                                |
-| HBase            | Stores user-level behavior features                              |
-| Jupyter Notebook | Generates data visualizations                                    |
-| GitHub           | Stores scripts, documentation, images, and reproducibility steps |
+| Tool              | Purpose                                                          |
+| ----------------- | ---------------------------------------------------------------- |
+| HDFS              | Stores raw and processed datasets                                |
+| Apache Pig        | Cleans raw behavior data and generates behavior summary          |
+| Apache Spark      | Creates user-level behavior features                             |
+| Spark MLlib       | Trains purchase prediction models                                |
+| HBase             | Stores user-level behavior features in NoSQL format              |
+| Zeppelin Notebook | Generates the main visualization outputs for behavior analysis   |
+| GitHub            | Stores scripts, documentation, images, and reproducibility steps |
 
 ---
 
@@ -102,10 +102,12 @@ Apache Spark
 HBase
 - Store user-level behavior features
         ↓
-Jupyter Notebook
-- Generate visualizations
-- Support insights and report discussion
+Zeppelin Notebook
+- Generate behavior analysis charts
+- Support visualization and report discussion
 ```
+
+This workflow shows how the project moves from raw data storage to cleaning, feature engineering, machine learning, NoSQL storage, and visualization.
 
 ---
 
@@ -126,16 +128,14 @@ ecommerce-customer-behavior-bigdata/
 │   └── hbase_commands.txt
 │
 ├── notebook/
-│   └── ecommerce_visualization.ipynb
+│   └── zeppelin_visualization_notes.md
 │
 ├── images/
-│   ├── behavior_distribution.png
+│   ├── behavior_type_distribution.png
 │   ├── conversion_funnel.png
-│   ├── hourly_user_activity.png
-│   ├── buyer_nonbuyer_distribution.png
-│   ├── top10_purchase_categories.png
-│   ├── model_performance_comparison.png
-│   └── confusion_matrix_summary.png
+│   ├── hourly_user_activity_trend.png
+│   ├── top_product_categories_purchase.png
+│   └── user_level_behavior_features.png
 │
 ├── results/
 │   └── model_results_summary.md
@@ -143,6 +143,8 @@ ecommerce-customer-behavior-bigdata/
 └── docs/
     └── reproducibility_instructions.md
 ```
+
+The repository is organized based on the main stages of the project. The `pig` folder contains the data cleaning script, the `spark` folder contains the Spark MLlib script, the `hbase` folder records HBase-related commands, and the `images` folder stores the visualizations generated from Zeppelin Notebook.
 
 ---
 
@@ -298,51 +300,41 @@ This number represents unique user-level feature records after grouping by `user
 
 ## 5. Visualizations
 
-Jupyter Notebook was used to create visualizations for the final report.
+The main visualizations in this project were generated using **Zeppelin Notebook**. After the data cleaning, feature engineering, and model training steps were completed in the Hadoop environment, Zeppelin Notebook was used to present the analysis results in a clearer and more readable form.
 
-The notebook is located at:
-
-```text
-notebook/ecommerce_visualization.ipynb
-```
+The visualization outputs are stored in the `images/` folder.
 
 ### Visualization Outputs
 
-| Figure                           | Description                                      |
-| -------------------------------- | ------------------------------------------------ |
-| behavior_distribution.png        | Distribution of behavior types                   |
-| conversion_funnel.png            | Conversion funnel from page view to purchase     |
-| hourly_user_activity.png         | User activity pattern by hour                    |
-| buyer_nonbuyer_distribution.png  | Buyer vs non-buyer distribution                  |
-| top10_purchase_categories.png    | Top 10 product categories by purchase count      |
-| model_performance_comparison.png | Comparison of machine learning model performance |
-| confusion_matrix_summary.png     | Confusion matrix summary                         |
+| Visualization                       | File                                  | Description                                                                  |
+| ----------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------- |
+| User Behavior Type Distribution     | `behavior_type_distribution.png`      | Shows the distribution of page view, cart, favorite, and purchase actions    |
+| E-commerce Conversion Funnel        | `conversion_funnel.png`               | Shows the drop from browsing behavior to purchase behavior                   |
+| Hourly User Activity Trend          | `hourly_user_activity_trend.png`      | Shows how user activity changes by hour                                      |
+| Top Product Categories by Purchases | `top_product_categories_purchase.png` | Shows the product categories with the highest purchase counts                |
+| User-level Behavior Features        | `user_level_behavior_features.png`    | Shows user-level behavior feature patterns generated from the processed data |
 
 ### Sample Visualizations
 
 #### User Behavior Type Distribution
 
-![User Behavior Type Distribution](images/behavior_distribution.png)
+![User Behavior Type Distribution](./images/behavior_type_distribution.png)
 
 #### E-commerce Conversion Funnel
 
-![E-commerce Conversion Funnel](images/conversion_funnel.png)
+![E-commerce Conversion Funnel](./images/conversion_funnel.png)
 
-#### Hourly User Activity Pattern
+#### Hourly User Activity Trend
 
-![Hourly User Activity Pattern](images/hourly_user_activity.png)
+![Hourly User Activity Trend](./images/hourly_user_activity_trend.png)
 
-#### Buyer vs Non-buyer Distribution
+#### Top Product Categories by Purchases
 
-![Buyer vs Non-buyer Distribution](images/buyer_nonbuyer_distribution.png)
+![Top Product Categories by Purchases](./images/top_product_categories_purchase.png)
 
-#### Top 10 Product Categories by Purchases
+#### User-level Behavior Features
 
-![Top 10 Product Categories by Purchases](images/top10_purchase_categories.png)
-
-#### Model Performance Comparison
-
-![Model Performance Comparison](images/model_performance_comparison.png)
+![User-level Behavior Features](./images/user_level_behavior_features.png)
 
 ---
 
@@ -360,12 +352,15 @@ Several insights were obtained from the analysis:
    Users who add products to cart or favorites are more engaged than users who only view products. These users are suitable targets for reminders or promotional offers.
 
 4. **User activity is time-dependent.**
-   The hourly activity chart shows that user activity is higher around early afternoon. This can support better promotion timing.
+   The hourly activity trend shows that user activity changes across different hours of the day. This can support better promotion timing and recommendation scheduling.
 
-5. **The dataset is highly imbalanced.**
+5. **User-level behavior features support purchase prediction.**
+   Spark generated user-level features such as `pv_count`, `fav_count`, and `cart_count`. These features were used to train purchase prediction models.
+
+6. **The dataset is highly imbalanced.**
    There are 166,180 non-buyers and only 4,056 buyers. This means accuracy alone is not enough to evaluate model performance.
 
-6. **Random Forest performs best among the tested models.**
+7. **Random Forest performs best among the tested models.**
    Random Forest achieved the highest AUC score of 0.8969, making it the strongest model in this project.
 
 ---
@@ -384,7 +379,7 @@ Users who add products to cart or favorites show stronger purchase intention. Th
 
 ### 3. Optimize Promotion Timing
 
-User activity is higher around early afternoon. Promotional campaigns and recommendation messages can be scheduled during this period to increase engagement.
+The hourly user activity trend can help identify suitable periods for customer engagement. Promotional campaigns and recommendation messages can be scheduled during more active periods to increase visibility and engagement.
 
 ### 4. Prioritize High-Purchase Product Categories
 
@@ -511,15 +506,19 @@ Expected result:
 170236 row(s)
 ```
 
-### Step 10: Run Jupyter Notebook for Visualization
+### Step 10: Generate Visualizations Using Zeppelin Notebook
 
-Open:
+The main visualizations were generated using Zeppelin Notebook after the cleaned and processed behavior data was available in the Hadoop environment.
+
+The generated figures were exported and saved in the `images/` folder:
 
 ```text
-notebook/ecommerce_visualization.ipynb
+behavior_type_distribution.png
+conversion_funnel.png
+hourly_user_activity_trend.png
+top_product_categories_purchase.png
+user_level_behavior_features.png
 ```
-
-Run all cells to generate the figures in the `images/` folder.
 
 ---
 
@@ -566,8 +565,14 @@ Future work can improve this project by:
 
 ## Conclusion
 
-This project demonstrates how big data tools can be used to process, analyze, model, and store e-commerce customer behavior data. Apache Pig was used to clean the raw dataset, Spark was used for feature engineering and machine learning, HBase was used for NoSQL storage, and Jupyter Notebook was used for visualization.
+This project demonstrates how big data tools can be used to process, analyze, model, and store e-commerce customer behavior data. Apache Pig was used to clean the raw dataset, Spark was used for feature engineering and machine learning, HBase was used for NoSQL storage, and Zeppelin Notebook was used to generate the main visualization outputs for the report.
 
 The results show that page views dominate user behavior, while purchases are much less frequent. The conversion funnel indicates a clear drop from browsing to purchase. Machine learning results show that Random Forest achieved the best AUC score among the tested models. The project provides useful insights for improving purchase conversion, targeting high-intention users, and supporting data-driven e-commerce decision-making.
 
 ---
+
+## Author
+
+**XU LIUJING**
+Master of Science in Data Science and Analytics
+STQD6324 Data Management
