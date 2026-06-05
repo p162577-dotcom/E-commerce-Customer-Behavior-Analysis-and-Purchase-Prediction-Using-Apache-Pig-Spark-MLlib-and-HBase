@@ -570,9 +570,3 @@ This project demonstrates how big data tools can be used to process, analyze, mo
 The results show that page views dominate user behavior, while purchases are much less frequent. The conversion funnel indicates a clear drop from browsing to purchase. Machine learning results show that Random Forest achieved the best AUC score among the tested models. The project provides useful insights for improving purchase conversion, targeting high-intention users, and supporting data-driven e-commerce decision-making.
 
 ---
-
-## Author
-
-**XU LIUJING**
-Master of Science in Data Science and Analytics
-STQD6324 Data Management
